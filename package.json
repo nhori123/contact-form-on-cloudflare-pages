@@ -1,0 +1,28 @@
+{
+  "name": "contact-form-on-cloudflare-pages",
+  "version": "1.0.0",
+  "description": "Cloudflare Pagesに問合せフォームを設置します。\r 設置した問合せフォームに問合せが入った場合は、問合せ内容がサイト管理者宛てにメールで通知されるようにします。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhori123/contact-form-on-cloudflare-pages.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nhori123/contact-form-on-cloudflare-pages/issues"
+  },
+  "homepage": "https://github.com/nhori123/contact-form-on-cloudflare-pages#readme",
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
+    "eslint": "^10.0.2",
+    "typescript": "^5.9.3"
+  }
+}
