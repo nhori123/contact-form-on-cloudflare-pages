@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
+    "types": ["@cloudflare/workers-types"],
     "target": "ES2020",
     "module": "ESNext",
-    "lib": ["ES2020", "DOM"],
+    "lib": ["ES2020"],
     "moduleResolution": "Node",
     "strict": true,
     "esModuleInterop": true,
