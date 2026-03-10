@@ -35,7 +35,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   // メール本文（簡易 HTML エスケープ）
-  const subject = `New contact from ${name}`;
+  const subject = `新しいお問い合わせが送信されました: from ${name}`;
   const html = `
     <p><strong>From:</strong> ${escapeHtml(name)} &lt;${escapeHtml(email)}&gt;</p>
     <p><strong>Message:</strong></p>
