@@ -38,6 +38,16 @@
         } else {
           status.textContent = '送信が完了しました。ありがとうございました。';
           form.reset();
+
+          // 送信ボタンを無効化
+          submitBtn.disabled = true;
+          submitBtn.textContent = '送信完了';
+          submitBtn.classList.add('cursor-not-allowed', 'bg-gray-400', 'hover:bg-gray-400');
+          submitBtn.dataset.permanent = 'true';
+
+          // さらにフォーム内の全入力を無効化して二重送信を確実に防ぐ
+          form.querySelectorAll('input, textarea').forEach(el => el.disabled = true);
+
           console.log('サーバー応答:', data);
         }
       } catch (err) {
@@ -49,7 +59,10 @@
         }
       } finally {
         clearTimeout(timeoutId);
-        submitBtn.disabled = false;
+        // 永久無効化フラグが無ければボタンを再有効化
+        if (!submitBtn.dataset.permanent) {
+          submitBtn.disabled = false;
+        }
       }
     });
   });
