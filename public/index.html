@@ -19,11 +19,15 @@
       submitBtn.disabled = true;
 
       const formData = new FormData(form);
+      const TIMEOUT = 10000;  // タイムアウト 10000ms=10秒
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
 
       try {
         const res = await fetch('/api/contact', {
           method: 'POST',
-          body: formData // <- FormData をそのまま送る（Content-Type は自動）
+          body: formData,
+          signal: controller.signal
         });
 
         const data = await res.json().catch(() => null);
@@ -37,9 +41,14 @@
           console.log('サーバー応答:', data);
         }
       } catch (err) {
-        console.error(err);
-        status.textContent = '通信エラーが発生しました。もう一度お試しください。';
+        if (err && err.name === 'AbortError') {
+          status.textContent = 'リクエストがタイムアウトしました。もう一度お試しください。';
+        } else {
+          console.error(err);
+          status.textContent = '通信エラーが発生しました。もう一度お試しください。';
+        }
       } finally {
+        clearTimeout(timeoutId);
         submitBtn.disabled = false;
       }
     });
