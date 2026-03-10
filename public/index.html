@@ -5,6 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+    const status = document.createElement('div');
+    status.className = 'mt-3 text-sm text-slate-700';
+    form.appendChild(status);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '送信中...';
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          body: formData // <- FormData をそのまま送る（Content-Type は自動）
+        });
+
+        const data = await res.json().catch(() => null);
+
+        if (!res.ok) {
+          const msg = (data && data.error) ? data.error : '送信に失敗しました';
+          status.textContent = 'エラー: ' + msg;
+        } else {
+          status.textContent = '送信が完了しました。ありがとうございました。';
+          form.reset();
+          console.log('サーバー応答:', data);
+        }
+      } catch (err) {
+        console.error(err);
+        status.textContent = '通信エラーが発生しました。もう一度お試しください。';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  });
+  </script>
 </head>
 <body class="bg-slate-50 text-slate-900">
   <header class="bg-white shadow-sm">
