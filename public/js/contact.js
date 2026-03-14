@@ -35,10 +35,37 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // 送信前の長さチェック（コードポイント長でカウント）
+    const MAX = { name: 100, email: 254, message: 3000 };
+    const nameLen = [...name].length;
+    const emailLen = [...email].length;
+    const msgLen = [...message].length;
+
+    if (nameLen > MAX.name) {
+      status.textContent = `お名前は最大${MAX.name}文字です（現在 ${nameLen}文字）。`;
+      form.querySelector('#name').focus();
+      return;
+    }
+    if (emailLen > MAX.email) {
+      status.textContent = `メールアドレスは最大${MAX.email}文字です（現在 ${emailLen}文字）。`;
+      form.querySelector('#email').focus();
+      return;
+    }
+    if (msgLen > MAX.message) {
+      status.textContent = `お問い合わせ内容は最大${MAX.message}文字です（現在 ${msgLen}文字）。`;
+      form.querySelector('#message').focus();
+      return;
+    }
+
     status.textContent = '送信中...';
     submitBtn.disabled = true;
 
     const formData = new FormData(form);
+
+    formData.set('name', name);
+    formData.set('email', email);
+    formData.set('message', message);
+
     const TIMEOUT = 10000;  // タイムアウト 10000ms=10秒
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
