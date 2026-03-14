@@ -27,9 +27,36 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const message = String(formData.get("message") ?? "").trim();
 
   // 簡易バリデーション
-  if (!name.trim() || !email.trim() || !message.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  const MAX = { name: 100, email: 254, message: 3000 };
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!name || !email || !message) {
     return new Response(
-      JSON.stringify({ error: "Invalid input" }),
+      JSON.stringify({ error: "Invalid input: empty fields" }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+  if (!emailRe.test(email)) {
+    return new Response(
+      JSON.stringify({ error: "Invalid input: invalid email" }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+  // コードポイント長でカウント（多言語対応）
+  const nameLen = [...name].length;
+  const emailLen = [...email].length;
+  const msgLen = [...message].length;
+
+  const errs: string[] = [];
+  if (nameLen > MAX.name) errs.push(`name too long (max ${MAX.name})`);
+  if (emailLen > MAX.email) errs.push(`email too long (max ${MAX.email})`);
+  if (msgLen > MAX.message) errs.push(`message too long (max ${MAX.message})`);
+
+  if (errs.length > 0) {
+    return new Response(
+      JSON.stringify({ error: "Invalid input: " + errs.join("; ") }),
       { status: 400, headers: { "Content-Type": "application/json" } }
     );
   }
