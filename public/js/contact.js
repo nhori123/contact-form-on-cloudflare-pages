@@ -7,8 +7,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    status.textContent = '送信中...';
     const submitBtn = form.querySelector('button[type="submit"]');
+    
+    const name = form.querySelector('#name').value.trim();
+    const email = form.querySelector('#email').value.trim();
+    const message = form.querySelector('#message').value.trim();
+
+    if (!name) {
+      status.textContent = 'お名前を入力してください。';
+      return;
+    }
+    if (!email) {
+      status.textContent = 'メールアドレスを入力してください。';
+      return;
+    }
+    if (!message) {
+      status.textContent = 'お問い合わせ内容を入力してください。';
+      return;
+    }
+
+    status.textContent = '送信中...';
     submitBtn.disabled = true;
 
     const formData = new FormData(form);
