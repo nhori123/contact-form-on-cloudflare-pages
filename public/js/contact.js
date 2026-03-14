@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const submitBtn = form.querySelector('button[type="submit"]');
     
+    // 簡易バリデーション: 空文字チェック
     const name = form.querySelector('#name').value.trim();
     const email = form.querySelector('#email').value.trim();
     const message = form.querySelector('#message').value.trim();
@@ -23,6 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (!message) {
       status.textContent = 'お問い合わせ内容を入力してください。';
+      return;
+    }
+
+    // 簡易バリデーション: メールアドレスの形式チェック
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(email)) {
+      status.textContent = '有効なメールアドレスを入力してください。';
+      form.querySelector('#email').focus();
       return;
     }
 
