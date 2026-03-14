@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         status.textContent = '送信が完了しました。ありがとうございました。';
         form.reset();
+        updateCounter();
 
         // 送信ボタンを無効化
         submitBtn.disabled = true;
@@ -112,4 +113,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+  
+  // お問い合わせ内容の文字数カウンター
+  const msgEl = form.querySelector('#message');
+  const counter = form.querySelector('#message-counter');
+  const MAX = { message: 3000 };
+
+  const updateCounter = () => {
+    const len = [...msgEl.value].length; // コードポイント単位
+    counter.textContent = `(${len}/${MAX.message})`;
+    counter.classList.toggle('text-red-600', len > MAX.message);
+    counter.classList.toggle('text-amber-600', len > Math.floor(MAX.message * 0.9) && len <= MAX.message);
+  };
+
+  msgEl.addEventListener('input', updateCounter);
+  updateCounter();
+
 });
